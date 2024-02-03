@@ -10,7 +10,6 @@ import logging
 import time
 import datetime
 import email.utils
-import signal
 import platform
 
 HOSTNAME = platform.node()
