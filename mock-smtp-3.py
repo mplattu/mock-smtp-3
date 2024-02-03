@@ -27,8 +27,7 @@ os.chdir(os.getenv('MOCK_SMTP_PATH', default='.'))
 
 class SmtpHandler:
     def __init__(self):
-        self.EMPTY_EMAIL = 'none'
-        self.last_email = self.EMPTY_EMAIL
+        self.last_email = None
 
     async def handle_RCPT(self, server, session, envelope, address, rcpt_options):
         envelope.rcpt_tos.append(address)
@@ -73,10 +72,19 @@ class SmtpHandler:
         return '250 Message accepted for delivery'
     
     def getLastEmail(self):
+        if self.last_email is None:
+            return "no last email"
+
         return self.last_email
     
+    def waitLastEmail(self):
+        while (self.last_email is None):
+            time.sleep(1)
+        
+        return self.getLastEmail()
+
     def clearLastEmail(self):
-        self.last_email = self.EMPTY_EMAIL
+        self.last_email = None
 
 routes = web.RouteTableDef()
 
@@ -93,6 +101,10 @@ async def main():
     @routes.get('/')
     async def httpHandlerGetLastEmail(request):
         return web.Response(text=smtpHandler.getLastEmail())
+
+    @routes.get('/wait')
+    async def httpHandlerGetLastEmail(request):
+        return web.Response(text=smtpHandler.waitLastEmail())
 
     @routes.get('/clear')
     async def httpHandlerClearLastEmail(request):

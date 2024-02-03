@@ -42,6 +42,19 @@ daemon will drop privileges, and assume the same identify of the owner/group
 of current directory or (the one specified in `MOCK_SMTP_PATH`), after the
 SMTP socket is open.
 
+# Web Access
+
+There are following routes available:
+
+ - `/` - get the last email
+ - `/wait` - wait until there is a last email
+ - `/clear` - clear the last email
+
+Typical test pattern is:
+ 1. Make HTTP GET to `/clear` to remove the last email
+ 1. Make an action which sends email to the mock SMTP (e.g. send registration link)
+ 1. Make HTTP GET to `/wait` to make the get poll until the email is available
+
 # How to Run via Docker
 
 ```
