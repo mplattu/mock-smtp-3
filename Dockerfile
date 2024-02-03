@@ -8,6 +8,7 @@ ENV MOCK_WEB_PORT=8088
 
 COPY mock-smtp-3.py /usr/sbin/mock-smtp-3
 COPY requirements.txt /app/requirements.txt
+COPY entrypoint.sh /app/entrypoint.sh
 
 RUN apk add tzdata --no-cache
 RUN pip install -r /app/requirements.txt
@@ -17,4 +18,4 @@ EXPOSE $MOCK_WEB_PORT
 
 VOLUME $MOCK_SMTP_PATH
 
-CMD ["python /usr/sbin/mock-smtp-3"]
+ENTRYPOINT ["/app/entrypoint.sh"]
