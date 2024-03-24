@@ -44,7 +44,7 @@ class SmtpHandler:
 
         today = time.time()
         rfc822_date = email.utils.formatdate(today, True)
-        file = f'{datetime.datetime.fromtimestamp(today).strftime("%Y-%m-%dT%T.%f")}.eml'
+        file = f'{datetime.datetime.fromtimestamp(today).strftime("%Y-%m-%d_%H-%M-%S-%f")}.eml'
 
         mailContent = []
 
